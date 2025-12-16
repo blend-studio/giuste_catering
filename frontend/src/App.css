@@ -1,42 +1,35 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Tailwind Ticker */
+.ticker-container {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    background-color: #E87A5D; /* Colore di sfondo desiderato */
+    color: white; /* Colore del testo desiderato */
+    padding: 10px 0; /* Spaziatura verticale */
   }
-  to {
-    transform: rotate(360deg);
+  
+  .ticker-content {
+    display: flex;
+    animation: ticker-scroll 30s linear infinite; /* Regola la durata per la velocità */
+    align-items: center; /* Allinea verticalmente gli elementi */
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  
+  .ticker-item {
+    padding: 0 40px; /* Spaziatura tra gli elementi */
+    font-size: 1.1rem; /* Dimensione del font */
+    text-transform: uppercase; /* Testo in maiuscolo */
+    white-space: nowrap; /* Evita che il testo vada a capo */
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spazio tra icona e testo */
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+  
+  @keyframes ticker-scroll {
+    from {
+      transform: translateX(0%);
+    }
+    to {
+      transform: translateX(-50%); /* Muove fino a metà per un loop infinito */
+    }
+  }
+   

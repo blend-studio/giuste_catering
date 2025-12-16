@@ -1,238 +1,180 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Leaf, Calendar, Truck, ChefHat, UtensilsCrossed, ArrowRight } from 'lucide-react';
+import { Leaf, Truck, UtensilsCrossed, Instagram, Facebook, Mail } from 'lucide-react';
 
-// Configurazione animazioni base
+// Importa le nuove immagini
+import heroImage from './assets/images/Giustino - Lato Destro - JPEG.webp';
+import image1 from './assets/images/Spolpette.webp';
+import image2 from './assets/images/Pisarei fagioli croccanti.webp';
+import image3 from './assets/images/Montanarina Coppa.jpg';
+import image4 from './assets/images/Giusté + Giustino 1 - JPEG.webp';
+
 const fadeInUp = {
-  hidden: { opacity: 0, y: 60 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  hidden: { opacity: 0, y: 50 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.6, -0.05, 0.01, 0.99] } }
 };
 
 const staggerContainer = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2
-    }
-  }
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
 };
 
+const galleryImages = [
+    { src: image1, alt: "Spolpette artigianali" },
+    { src: image2, alt: "Pisarei e fagioli croccanti" },
+    { src: image3, alt: "Montanarina con coppa" },
+    { src: image4, alt: "Il food truck Giusté" }
+];
+
 const CateringPage = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '', date: '' });
-  const [status, setStatus] = useState(null);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '', date: '', type: '' });
+  const [status, setStatus] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Chiamata all'API Laravel (implementata sotto)
+    setStatus('loading');
     try {
-        const response = await fetch('https://api.giustefoodtruck.com/api/catering-inquiry', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        });
-        if(response.ok) setStatus('success');
+      const response = await fetch('https://api.giustefoodtruck.com/api/catering-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', message: '', date: '', type: '' });
+      } else { throw new Error('Network response was not ok.'); }
     } catch (err) {
-        setStatus('error');
+      setStatus('error');
     }
   };
 
   return (
-    <div className="bg-[#325541] text-white min-h-screen font-sans selection:bg-white selection:text-[#325541]">
-      
+    <div className="bg-background text-foreground min-h-screen selection:bg-primary selection:text-primary-foreground">
+
       {/* --- HERO SECTION --- */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Placeholder per Immagine da NAS: 20250410_Giusté_Truck_Jpeg_HR */}
-        <div className="absolute inset-0 z-0 opacity-40">
-           <img 
-             src="/path/to/hero-image.jpg" // CAMBIARE CON PERCORSO REALE
-             alt="Giustè Catering Experience" 
-             className="w-full h-full object-cover"
-           />
+      <section className="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <img src={heroImage} alt="Giustè Food Truck per catering" className="w-full h-full object-cover object-center" />
+          <div className="absolute inset-0 bg-black/40"></div>
         </div>
-        
-        <div className="z-10 text-center px-4 max-w-5xl">
-          <motion.h1 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, type: "spring" }}
-            className="text-6xl md:text-8xl font-bold tracking-tighter mb-6 uppercase"
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent"></div>
+
+        <div className="z-20 text-center text-white px-4">
+          <motion.h1
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2, ease: [0.6, -0.05, 0.01, 0.99] }}
+            className="text-6xl md:text-9xl font-heading font-extrabold tracking-wider uppercase"
           >
-            Non Solo Truck
+            L'Esperienza Giustè
           </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            className="text-xl md:text-2xl font-light tracking-widest border-t border-b border-white/30 py-4 inline-block"
+          <motion.p
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.2, ease: [0.6, -0.05, 0.01, 0.99] }}
+            className="text-lg md:text-xl mt-4 max-w-2xl font-sans font-light"
           >
-            L'esperienza Giustè, ovunque tu voglia.
+            Portiamo la nostra passione per il cibo autentico e la convivialità ovunque tu sia.
           </motion.p>
         </div>
       </section>
-
-      {/* --- CONCETTI CHIAVE (Grid) --- */}
-      <section className="py-24 px-6 md:px-20 bg-white text-[#325541]">
-        <motion.div 
+      
+      {/* --- PUNTI DI FORZA --- */}
+      <section className="py-24 md:py-32 px-6 md:px-12 bg-card">
+        <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-12"
+          viewport={{ once: true, amount: 0.3 }}
+          className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-20 text-center"
         >
-          {/* Card 1 */}
-          <motion.div variants={fadeInUp} className="group">
-            <div className="mb-6 p-4 border-2 border-[#325541] rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-[#325541] group-hover:text-white transition-colors duration-300">
-              <Truck size={40} />
-            </div>
-            <h3 className="text-2xl font-bold mb-3 uppercase">Con o Senza Truck</h3>
-            <p className="text-lg leading-relaxed opacity-80">
-              Eventi privati in location esclusive? Veniamo noi da te. 
-              Non serve il camioncino per portare il gusto. Allestiamo la cucina ovunque.
-            </p>
-          </motion.div>
-
-          {/* Card 2 */}
-          <motion.div variants={fadeInUp} className="group">
-            <div className="mb-6 p-4 border-2 border-[#325541] rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-[#325541] group-hover:text-white transition-colors duration-300">
-              <UtensilsCrossed size={40} />
-            </div>
-            <h3 className="text-2xl font-bold mb-3 uppercase">Menù Sartoriale</h3>
-            <p className="text-lg leading-relaxed opacity-80">
-              Dalla tradizione al 100% vegetale. Creiamo il menù su misura per le tue esigenze, 
-              con opzioni vegane, vegetariane e intolleranze incluse.
-            </p>
-          </motion.div>
-
-           {/* Card 3 */}
-           <motion.div variants={fadeInUp} className="group">
-            <div className="mb-6 p-4 border-2 border-[#325541] rounded-full w-20 h-20 flex items-center justify-center group-hover:bg-[#325541] group-hover:text-white transition-colors duration-300">
-              <Calendar size={40} />
-            </div>
-            <h3 className="text-2xl font-bold mb-3 uppercase">Sempre Presenti</h3>
-            <p className="text-lg leading-relaxed opacity-80">
-              Siamo operativi <strong>7 giorni su 7</strong>. Che sia un brunch domenicale o una cena aziendale del martedì, Giustè risponde.
-            </p>
-          </motion.div>
+          {[
+            { icon: Truck, title: "Dentro e Fuori dal Truck", text: "Allestiamo cucine professionali in qualsiasi location o arriviamo direttamente con il nostro iconico food truck." },
+            { icon: UtensilsCrossed, title: "Menù Sartoriale", text: "Creiamo esperienze di gusto su misura: dalla tradizione piacentina a proposte 100% vegetali, con attenzione a ogni esigenza." },
+            { icon: Leaf, title: "Filosofia Sostenibile", text: "Valorizziamo ogni ingrediente con un approccio 'zero sprechi', selezionando produttori locali e rispettando la stagionalità." }
+          ].map((item, i) => (
+            <motion.div key={i} variants={fadeInUp} className="flex flex-col items-center">
+              <div className="mb-6 text-primary"><item.icon size={44} strokeWidth={1.5}/></div>
+              <h3 className="text-2xl font-heading mb-4 tracking-wide">{item.title}</h3>
+              <p className="text-base leading-relaxed text-muted-foreground">{item.text}</p>
+            </motion.div>
+          ))}
         </motion.div>
       </section>
 
-      {/* --- SEZIONE SOSTENIBILITÀ (Parallax/Big Impact) --- */}
-      <section className="py-32 px-6 bg-[#325541] relative overflow-hidden flex items-center">
-        {/* Decorazione Sfondo Animata */}
-        <motion.div 
-            animate={{ rotate: 360 }}
-            transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
-            className="absolute -right-20 -top-20 opacity-10"
-        >
-            <Leaf size={400} />
-        </motion.div>
-
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center z-10">
-          <motion.div 
-            initial={{ x: -100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-5xl md:text-7xl font-bold mb-8">Radici &<br/>Sostenibilità</h2>
-            <div className="space-y-6 text-xl font-light">
-              <p>
-                Il nostro cuore batte per il territorio. Utilizziamo erbe stagionali e prodotti locali, 
-                rispettando la tradizione ma guardando al futuro.
-              </p>
-              <p className="flex items-start gap-3">
-                <Leaf className="text-green-300 mt-1 shrink-0" />
-                <span>
-                  <strong>Filosofia Zero Sprechi:</strong> Ogni parte dell'ingrediente viene valorizzata. 
-                  Dalla buccia al cuore, cuciniamo con rispetto per la natura.
-                </span>
-              </p>
-            </div>
+      {/* --- IMAGE GALLERY --- */}
+      <section className="py-24 md:py-32 bg-accent">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <motion.div initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true, amount: 0.5 }} className="text-center mb-16">
+            <h2 className="text-5xl md:text-6xl font-heading tracking-wider">Un Assaggio di Giustè</h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-xl mx-auto">La qualità delle materie prime, la cura nella preparazione.</p>
           </motion.div>
-          
-          <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ margin: "-100px" }}
-            className="relative h-[500px] border border-white/20 p-4"
-          >
-             {/* Placeholder immagine piatto: 20250410_Giusté_Truck_Jpeg_HR */}
-             <div className="w-full h-full bg-stone-800 overflow-hidden relative group">
-                <img 
-                    src="/path/to/food-detail.jpg" 
-                    alt="Dettaglio Cibo Sostenibile" 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                />
-                <div className="absolute bottom-4 left-4 bg-white text-[#325541] px-4 py-1 text-sm font-bold">
-                    STAGIONALITÀ GARANTITA
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }} className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+            {galleryImages.map((img, index) => (
+              <motion.div key={index} variants={fadeInUp} className="overflow-hidden rounded-md group relative shadow-md">
+                <div className="aspect-w-1 aspect-h-1">
+                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-in-out" />
                 </div>
-             </div>
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </section>
 
       {/* --- CONTACT FORM --- */}
-      <section className="py-24 bg-zinc-900 text-white relative">
-        <div className="max-w-4xl mx-auto px-6">
-          <motion.div 
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold mb-4">Organizziamo il tuo evento?</h2>
-            <p className="text-gray-400">Compila il form. Ti risponderemo prima che si raffreddi il forno.</p>
+      <section className="py-24 md:py-32 bg-card">
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <motion.div initial={{ y: 40, opacity: 0 }} whileInView={{ y: 0, opacity: 1 }} viewport={{ once: true }} className="mb-12">
+            <h2 className="text-5xl md:text-6xl font-heading tracking-wider">Organizza il Tuo Evento</h2>
+            <p className="mt-4 text-lg text-muted-foreground">Hai un'idea? Raccontacela. Costruiremo insieme un'esperienza indimenticabile.</p>
           </motion.div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input 
-                    type="text" 
-                    placeholder="Nome e Cognome" 
-                    className="w-full bg-transparent border-b border-gray-600 p-4 focus:border-[#325541] focus:outline-none transition-colors"
-                    onChange={e => setFormData({...formData, name: e.target.value})}
-                />
-                <input 
-                    type="email" 
-                    placeholder="Email" 
-                    className="w-full bg-transparent border-b border-gray-600 p-4 focus:border-[#325541] focus:outline-none transition-colors"
-                    onChange={e => setFormData({...formData, email: e.target.value})}
-                />
+          <form onSubmit={handleSubmit} className="space-y-8 text-left">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              <input type="text" name="name" placeholder="Nome e Cognome" value={formData.name} onChange={(e) => setFormData({...formData, name: e.target.value})} className="form-input" required />
+              <input type="email" name="email" placeholder="La tua Email" value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} className="form-input" required />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input 
-                    type="date" 
-                    className="w-full bg-transparent border-b border-gray-600 p-4 focus:border-[#325541] focus:outline-none transition-colors text-gray-400"
-                    onChange={e => setFormData({...formData, date: e.target.value})}
-                />
-                <select 
-                     className="w-full bg-transparent border-b border-gray-600 p-4 focus:border-[#325541] focus:outline-none transition-colors bg-zinc-900"
-                     onChange={e => setFormData({...formData, type: e.target.value})}
-                >
-                    <option>Tipo di Evento</option>
-                    <option value="private">Privato (No Truck)</option>
-                    <option value="truck">Con Truck</option>
-                    <option value="corporate">Aziendale</option>
-                </select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+              <input type="date" name="date" value={formData.date} onChange={(e) => setFormData({...formData, date: e.target.value})} className="form-input text-muted-foreground" required/>
+              <select name="type" value={formData.type} onChange={(e) => setFormData({...formData, type: e.target.value})} className="form-input text-muted-foreground" required>
+                <option value="" disabled>Tipo di Evento</option>
+                <option value="private">Evento Privato (Senza Truck)</option>
+                <option value="truck">Evento con Food Truck</option>
+                <option value="corporate">Evento Aziendale</option>
+                <option value="other">Altro</option>
+              </select>
             </div>
-            <textarea 
-                placeholder="Raccontaci le tue esigenze (es. opzioni vegane, numero persone...)" 
-                rows="4"
-                className="w-full bg-transparent border-b border-gray-600 p-4 focus:border-[#325541] focus:outline-none transition-colors"
-                onChange={e => setFormData({...formData, message: e.target.value})}
-            ></textarea>
-
-            <motion.button 
-                whileHover={{ scale: 1.05, backgroundColor: "#ffffff", color: "#325541" }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-[#325541] text-white px-12 py-4 text-lg font-bold tracking-wider w-full md:w-auto mt-8 flex items-center justify-center gap-2 mx-auto"
-            >
-                INVIA RICHIESTA <ArrowRight size={20} />
-            </motion.button>
-
-            {status === 'success' && <p className="text-green-500 text-center mt-4">Messaggio ricevuto! A presto.</p>}
+            <textarea name="message" placeholder="Descrivi brevemente il tuo evento..." value={formData.message} rows="5" onChange={(e) => setFormData({...formData, message: e.target.value})} className="form-input" required></textarea>
+            
+            <div className="text-center pt-4">
+              <motion.button type="submit" whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }} className="bg-primary text-primary-foreground px-12 py-4 text-sm font-bold tracking-widest uppercase rounded-sm shadow-lg hover:shadow-primary/40 transition-all duration-300 disabled:opacity-50" disabled={status === 'loading'}>
+                {status === 'loading' ? 'Invio in corso...' : 'Invia la Richiesta'}
+              </motion.button>
+            </div>
+            
+            <div className="text-center mt-6 h-6">
+              {status === 'success' && <p className="text-green-600">Messaggio inviato! Ti risponderemo al più presto.</p>}
+              {status === 'error' && <p className="text-red-600">Ops, qualcosa è andato storto. Riprova.</p>}
+            </div>
           </form>
         </div>
       </section>
+      
+      {/* --- FOOTER --- */}
+      <footer className="bg-foreground text-background">
+          <div className="max-w-7xl mx-auto py-12 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+              <div className="mb-6 md:mb-0">
+                  <h4 className="font-heading text-2xl tracking-wider">Giustè</h4>
+                  <p className="text-sm text-muted-foreground font-light">&copy; {new Date().getFullYear()} Giustè Food Truck. Tutti i diritti riservati.</p>
+              </div>
+              <div className="flex space-x-6">
+                  <a href="#" className="text-background hover:text-primary transition-colors"><Instagram size={24} /></a>
+                  <a href="#" className="text-background hover:text-primary transition-colors"><Facebook size={24} /></a>
+                  <a href="mailto:info@giustefoodtruck.com" className="text-background hover:text-primary transition-colors"><Mail size={24} /></a>
+              </div>
+          </div>
+      </footer>
     </div>
   );
 };
