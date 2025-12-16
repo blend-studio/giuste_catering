@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Impostiamo il colore di sfondo base e il testo bianco come richiesto */
+body {
+  background-color: #325541; 
+  color: #ffffff;
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Assicurati che il font sia caricato o usa sans-serif di sistema */
+}
