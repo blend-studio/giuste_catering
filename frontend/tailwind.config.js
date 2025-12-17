@@ -28,10 +28,12 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        heading: ['Bebas Neue', 'sans-serif'],
+        sans: ['Montserrat', 'sans-serif'],
+        heading: ['Montserrat', 'sans-serif'],
       },
       borderRadius: {
+        // Aggiungiamo la curvatura personalizzata "giuste"
+        'giuste': '2.5rem', // 40px - Molto tondo
         lg: `0.5rem`,
         md: `calc(0.5rem - 2px)`,
         sm: `calc(0.5rem - 4px)`,

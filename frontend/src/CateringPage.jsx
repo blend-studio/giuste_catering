@@ -1,16 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { ArrowRight, Truck, ChefHat, Mail, MapPin, Instagram, Facebook, Utensils, CheckCircle2, Phone } from 'lucide-react';
+import { ArrowRight, ChefHat, Mail, MapPin, Instagram, Facebook, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X } from 'lucide-react';
 
 // ASSETS
-import heroImage from './assets/images/Giustino - Lato Destro - JPEG.webp'; 
-import food1 from './assets/images/Spolpette.webp';
-import food2 from './assets/images/Pisarei fagioli croccanti.webp';
+import heroImage from './assets/images/IMG_9150.webp';
+import food1 from './assets/images/IMG_9107.webp';
+import food2 from './assets/images/IMG_9142.webp';
 import food3 from './assets/images/Montanarina Coppa.jpg';
-import truckImg from './assets/images/Giusté + Giustino 1 - JPEG.webp';
-import detailImg from './assets/images/IMG_3993.webp';
-
-// --- COMPONENTI ANIMAZIONE ---
+import detailImg from './assets/images/20251129_173320.webp';
+import logistica from './assets/images/auguri in logistica pc .webp';
+import dolce from './assets/images/20251203_190718.webp'
+// --- COMPONENTS ---
 
 const StaggeredHeroText = ({ text, className = "", stroke = false }) => {
   const letters = Array.from(text);
@@ -39,11 +39,12 @@ const StaggeredHeroText = ({ text, className = "", stroke = false }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
-      className={`flex flex-wrap justify-start font-heading font-black uppercase tracking-tight leading-[0.9] ${className}`}
-      style={{ perspective: "1000px", WebkitTextStroke: stroke ? "2px #325541" : "none" }}
+      className={`flex font-heading font-black uppercase tracking-tight leading-[0.9] whitespace-nowrap ${className}`}
+      // Rimossa la logica stroke per forzare il bianco pieno come richiesto
+      style={{ perspective: "1000px" }}
     >
       {letters.map((letter, index) => (
-        <motion.span key={index} variants={child} className="inline-block origin-bottom drop-shadow-lg">
+        <motion.span key={index} variants={child} className="inline-block origin-bottom drop-shadow-2xl">
           {letter === " " ? "\u00A0" : letter}
         </motion.span>
       ))}
@@ -67,31 +68,27 @@ const RevealParagraph = ({ children, className = "" }) => {
   );
 };
 
-const SectionTitle = ({ children, subtitle }) => {
-  return (
-    <div className="mb-12 md:mb-16 text-center md:text-left text-primary">
-      <motion.span 
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        className="text-xs font-bold tracking-[0.2em] uppercase mb-4 block opacity-60"
-      >
-        {subtitle}
-      </motion.span>
-      <div className="overflow-hidden">
-        <motion.h2 
-          initial={{ y: "110%" }}
-          whileInView={{ y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl md:text-7xl font-heading leading-none"
-        >
-          {children}
-        </motion.h2>
-      </div>
-    </div>
-  );
-};
+const SectionTitle = ({ children, subtitle, align = "center" }) => (
+  <div className={`mb-6 sm:mb-8 ${align === "left" ? "text-left" : "text-center"}`}>
+    <motion.span 
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-3 block opacity-70"
+    >
+      {subtitle}
+    </motion.span>
+    <motion.h2 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.1 }}
+      className="text-primary text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-black leading-[0.9]"
+    >
+      {children}
+    </motion.h2>
+  </div>
+);
 
 const StaggeredList = ({ items }) => {
   return (
@@ -114,7 +111,7 @@ const StaggeredList = ({ items }) => {
           className="flex items-start gap-4 border-l-4 border-primary/20 pl-6 hover:border-primary transition-colors duration-300"
         >
            <CheckCircle2 className="text-primary w-8 h-8 shrink-0 mt-[-2px]" strokeWidth={1.5} />
-           <span className="text-xl md:text-2xl font-heading text-primary/90 leading-tight">{item}</span>
+           <span className="text-lg sm:text-xl md:text-2xl font-heading text-primary/90 leading-tight">{item}</span>
         </motion.li>
       ))}
     </motion.ul>
@@ -127,439 +124,484 @@ const NoiseOverlay = () => (
   </div>
 );
 
-// --- MAIN PAGE ---
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: "HOME", href: "https://giustefoodtruck.com/" },
+    { name: "NOI DUE", href: "https://giustefoodtruck.com/chi-siamo/" },
+    { name: "COSA FACCIAMO", href: "https://giustefoodtruck.com/servizi/" },
+    { name: "SOCIAL FEED", href: "https://giustefoodtruck.com/social-feed/" },
+  ];
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
+       {/* Top Bar - Hidden on scroll for cleaner look, or kept if preferred. Matching the screenshot's dark green */}
+       <div className={`bg-[#2b4432] text-white py-3 px-6 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden py-0' : 'h-auto'}`}>
+          <div className="max-w-7xl mx-auto flex justify-between items-center text-base font-medium tracking-wide">
+             <div className="flex items-center gap-2">
+                <Mail size={16} />
+                <a href="mailto:info@giustefoodtruck.it" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.it</a>
+             </div>
+             <div className="flex items-center gap-4">
+                 <a href="https://www.instagram.com/giustefoodtruck/" className="hover:opacity-80 transition-opacity"><Instagram size={16} /></a>
+             </div>
+          </div>
+       </div>
+
+       {/* Main Navbar */}
+       <div className={`bg-white shadow-md transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
+          <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+             {/* Logo */}
+             <a href="https://giustefoodtruck.com/" className="block">
+                <img 
+                   src="https://giustefoodtruck.com/wp-content/uploads/2023/03/logo-verde.png" 
+                   alt="Giustè Logo" 
+                   className={`object-contain transition-all duration-300 ${isScrolled ? 'h-12' : 'h-24 sm:h-18'}`} 
+                />
+             </a>
+
+             {/* Desktop Nav */}
+             <nav className="hidden lg:flex items-center gap-8">
+                {navLinks.map(link => (
+                   <a 
+                     key={link.name} 
+                     href={link.href}
+                     className="text-[#2b4432] font-semibold text-base tracking-widest hover:text-[#5c8a66] transition-colors relative group"
+                   >
+                     {link.name}
+                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#5c8a66] transition-all group-hover:w-full"></span>
+                   </a>
+                ))}
+                
+                {/* Contattaci Button - desktop */}
+                <div className="relative group ml-6">
+                   {/* Offset Green Border (Shadow effect) */}
+                   <div className="absolute top-1.5 left-1.5 w-full h-full border-2 border-[#2b4432] rounded-xl pointer-events-none transition-transform duration-300 group-hover:translate-x-1"></div>
+                   {/* Main Button */}
+                   <a 
+                      href="#contact"
+                      className="relative block bg-[#2b4432] text-white px-8 py-2 rounded-xl font-medium text-base active:scale-95 transition-all duration-300 hover:bg-[#fdd017] hover:text-[#2b4432]"
+                   >
+                      Contattaci
+                   </a>
+                </div>
+             </nav>
+
+             {/* Mobile Toggle */}
+             <div className="flex items-center lg:hidden">
+                <button className="text-[#2b4432]" onClick={() => setIsOpen(!isOpen)}>
+                   {isOpen ? <X size={28} /> : <Menu size={28} />}
+                </button>
+             </div>
+          </div>
+       </div>
+
+       {/* Mobile Menu */}
+       <motion.div 
+          initial={false}
+          animate={isOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+          className="lg:hidden bg-white border-t border-gray-100 overflow-hidden shadow-xl"
+       >
+          <div className="p-6 flex flex-col gap-6">
+             {navLinks.map(link => (
+                <a 
+                   key={link.name} 
+                   href={link.href}
+                   className="text-[#2b4432] font-semibold text-lg tracking-widest"
+                   onClick={() => setIsOpen(false)}
+                >
+                   {link.name}
+                </a>
+             ))}
+             <a 
+                href="#contact"
+                className="bg-[#2b4432] text-white px-6 py-3 rounded-xl font-bold text-sm tracking-widest text-center hover:bg-[#3d5e46] transition-all"
+                onClick={() => setIsOpen(false)}
+             >
+                Contattaci
+             </a>
+          </div>
+       </motion.div>
+    </header>
+  );
+};
+
+// --- PAGE COMPONENT ---
 
 const CateringPage = () => {
-  const [activeSplit, setActiveSplit] = useState('both');
-  const [formData, setFormData] = useState({ name: '', email: '', date: '', type: 'private', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', type: 'private', message: '' });
   const [status, setStatus] = useState('');
-  
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
-  const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const yParallax = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    // Simulazione chiamata API
     setTimeout(() => setStatus('success'), 2000);
   };
 
   return (
-    <div ref={containerRef} className="overflow-x-hidden bg-background text-foreground font-sans">
+    <div ref={containerRef} className="bg-background text-primary font-sans selection:bg-primary selection:text-background overflow-x-hidden w-full">
+      <Navbar />
       <NoiseOverlay />
       
-      {/* --- 1. HERO SECTION --- */}
-      <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden bg-black">
-        <motion.div style={{ y: yParallax }} className="absolute inset-0">
-           <img 
-             src={heroImage} 
-             alt="Giustè Food Truck Hero" 
-             className="w-full h-[120%] object-cover object-center opacity-90" 
-           />
-           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
-        </motion.div>
-        
-        <div className="z-20 relative w-full px-4 text-center mt-[-5vh]">
-          <motion.div 
-             initial={{ opacity: 0, scale: 0.9 }}
-             animate={{ opacity: 1, scale: 1 }}
-             transition={{ delay: 0.5 }}
-             className="inline-block mb-8 border border-white/30 bg-black/20 backdrop-blur-md px-6 py-2 rounded-full"
-          >
-             <span className="text-white text-xs md:text-sm font-bold tracking-[0.3em] uppercase drop-shadow-md">
-                Est. 2018 — Piacenza
-             </span>
-          </motion.div>
+      {/* --- HERO SECTION --- */}
+      <section className="relative h-[100dvh] w-full flex flex-col justify-center items-center overflow-hidden">
+            <motion.div style={{ y: yParallax }} className="absolute top-[-25%] left-0 w-full h-[150%] z-0">
+                <img 
+                   src={heroImage} 
+                   alt="Giustè Catering" 
+                   className="w-full h-full object-cover object-center" 
+                />
+                <div className="absolute inset-0 bg-black/60"></div> {/* Overlay scuro per contrasto */}
+            </motion.div>
 
-          <div className="relative mb-8 text-center flex flex-col items-center">
-            <div className="relative z-10 drop-shadow-[0_5px_5px_rgba(0,0,0,1)]">
-               <StaggeredHeroText text="GIUSTÈ" className="text-[18vw] md:text-[14vw] text-white justify-center" />
-               <StaggeredHeroText text="CATERING" className="text-[18vw] md:text-[14vw] text-white mt-[-1vw] md:mt-[-1.5vw] justify-center" />
+          
+            <div className="relative z-10 text-center text-white px-4 flex flex-col items-center">
+                <motion.div 
+                   initial={{ opacity: 0, y: 30 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   transition={{ duration: 0.8 }}
+                >
+                   <span className="inline-block border border-white/30 px-6 py-2 rounded-full text-sm font-bold tracking-[0.3em] uppercase mb-8 backdrop-blur-md">
+                        Tradizione & Eleganza
+                   </span>
+
+                   {/* TITOLO HERO: Bianco, Montserrat, Ben Disposto */}
+                   <div className="flex flex-col items-center gap-2">
+                      <StaggeredHeroText text="GIUSTÈ" className="text-[10vw] sm:text-[10vw] md:text-[10vw] leading-[0.8] text-white drop-shadow-xl" />
+                      <StaggeredHeroText text="CATERING" className="text-[10vw] sm:text-[10vw] md:text-[10vw] leading-[0.8] text-white drop-shadow-xl" />
+                   </div>
+
+                </motion.div>
             </div>
-          </div>
-
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.8 }}
-            className="text-white font-sans text-xl md:text-3xl font-light max-w-3xl mx-auto leading-relaxed drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-          >
-            L'esperienza del gusto, <span className="font-semibold text-white">con o senza Truck.</span><br/>
-            Ovunque tu voglia.
-          </motion.p>
-        </div>
 
         <motion.div 
-            className="absolute bottom-10 z-20 text-white flex flex-col items-center gap-2 drop-shadow-md"
+            className="absolute bottom-8 w-full text-white flex flex-col items-center gap-1"
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
         >
-             <span className="text-[10px] uppercase tracking-widest font-bold">Scorri</span>
-             <ArrowRight className="rotate-90 w-5 h-5" />
+             <span className="text-sm sm:text-base uppercase tracking-widest font-bold opacity-80">Scorri</span>
+             <ArrowRight className="rotate-90 w-6 h-6 sm:w-8 sm:h-8" />
         </motion.div>
       </section>
 
-      {/* --- 2. MANIFESTO --- */}
-      <section className="py-24 px-6 md:px-20 bg-background relative z-10">
-         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
-            <div className="lg:w-1/2">
-                <motion.span 
-                    initial={{ opacity: 0, letterSpacing: "0em" }}
-                    whileInView={{ opacity: 1, letterSpacing: "0.2em" }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: "easeOut" }}
-                    className="text-primary text-xl md:text-2xl font-bold uppercase mb-6 block border-b-2 border-primary/20 w-fit pb-2"
-                >
-                    La Nostra Filosofia
-                </motion.span>
+      {/* --- MANIFESTO --- */}
+      <section className="py-20 sm:py-24 px-6 md:px-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+           <div className="order-2 md:order-1">
+              <SectionTitle subtitle="La Nostra Filosofia" align="left">CATERING<br/>D'AUTORE.</SectionTitle>
+              <div className="space-y-6 text-base md:text-lg text-primary/80 font-light leading-relaxed">
+                 <p>
+                   Un'idea che nasce dalla passione per la cucina autentica piacentina e dalla voglia di portarla in contesti esclusivi.
+                 </p>
+                 <RevealParagraph className="text-xl md:text-2xl font-bold leading-relaxed text-primary/90 font-heading">
+                   La vera magia accade quando portiamo la nostra cucina a casa tua, in villa o nella tua azienda.
+                 </RevealParagraph>
+                 <p>
+                   Allestiamo cucine temporanee ovunque, creando un'esperienza gastronomica su misura per i tuoi momenti speciali, curando ogni dettaglio dalla materia prima al servizio.
+                 </p>
+                 
+                 <StaggeredList items={[
+                      "Allestimento cucine in location esclusive",
+                      "Menù sartoriali: Tradizione e Innovazione",
+                      "Materie prime stagionali a km0",
+                      "Servizio completo con personale di sala"
+                 ]} />
+              </div>
+           </div>
+           
+           <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="order-1 md:order-2 h-[250px] sm:h-[350px] md:h-[450px] lg:h-[600px] relative"
+           >
+              <div className="absolute inset-0 bg-primary rounded-giuste transform translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4"></div>
+              <img src={dolce} alt="Catering Giustè" className="w-full h-full object-cover rounded-giuste relative z-10 shadow-xl" />
+           </motion.div>
+        </div>
+      </section>
 
-                <div className="mb-10">
-                    <StaggeredHeroText text="NON SOLO" className="text-7xl md:text-8xl lg:text-9xl text-primary mb-[-10px] md:mb-[-20px]" />
-                    <StaggeredHeroText text="STREET FOOD" className="text-7xl md:text-8xl lg:text-9xl text-transparent stroke-text" stroke={true} />
-                </div>
-
-                <div className="prose prose-lg text-foreground/80 font-light">
-                   <RevealParagraph className="text-2xl md:text-3xl leading-relaxed mb-8 text-primary/80 font-heading">
-                     Molti ci conoscono per <strong className="text-primary font-black border-b-2 border-primary">Giustino</strong>, il nostro truck. 
-                     Ma la vera magia accade quando portiamo la nostra cucina a casa tua.
-                   </RevealParagraph>
-                   
-                   <StaggeredList items={[
-                        "Allestimento cucine professionali in location",
-                        "Menù sartoriali: Vegetariano, Vegano, Tradizionale",
-                        "Materie prime stagionali a km0 e zero sprechi",
-                        "Servizio completo con personale di sala"
-                   ]} />
-                </div>
-            </div>
-
-            <div className="lg:w-1/2 w-full h-[700px] relative">
+      {/* --- SERVIZI --- */}
+      <section className="py-20 sm:py-24 bg-white px-6">
+         <div className="max-w-7xl mx-auto">
+            <SectionTitle subtitle="Cosa Facciamo">I Nostri Servizi</SectionTitle>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+               {/* Card 1: EVENTI PRIVATI */}
                <motion.div 
-                 initial={{ clipPath: "polygon(0 0, 0 0, 0 100%, 0% 100%)" }}
-                 whileInView={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)" }}
-                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                 viewport={{ once: true }}
-                 className="h-full w-full rounded-sm overflow-hidden shadow-2xl bg-black"
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="group relative h-[55vh] sm:h-[60vh] overflow-hidden rounded-giuste cursor-pointer shadow-lg"
                >
-                  <img src={food3} alt="Catering Giustè" className="w-full h-full object-cover transition-all duration-700" />
-                  
-                  <div className="absolute bottom-8 right-0 bg-black/80 text-white px-10 py-8 max-w-sm backdrop-blur-md shadow-xl border-l-4 border-primary">
-                      <p className="font-heading text-3xl mb-2">CATERING PRIVATO</p>
-                      <p className="text-sm uppercase tracking-widest opacity-80">L'eleganza del servizio al piatto</p>
+                  <img src={detailImg} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors"></div>
+                  <div className="absolute bottom-0 left-0 p-6 sm:p-10 w-full bg-gradient-to-t from-primary/90 to-transparent text-[#ececec]">
+                     <ChefHat className="mb-4 w-8 h-8" />
+                     <h3 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black mb-2">Eventi Privati</h3>
+                     <p className="font-light opacity-90 max-w-md text-sm sm:text-base">Matrimoni, cene in villa, feste private. Catering sartoriale per rendere unico il tuo giorno.</p>
                   </div>
                </motion.div>
+
+               {/* Card 2: EVENTI AZIENDALI (Sostituisce Food Truck) */}
                <motion.div 
-                  initial={{ opacity: 0, x: 20, y: 20 }}
-                  whileInView={{ opacity: 1, x: 0, y: 0 }}
-                  transition={{ delay: 0.5, duration: 1 }}
-                  className="absolute -top-6 -left-6 w-full h-full border-2 border-primary/20 -z-10 rounded-sm"
-               ></motion.div>
-            </div>
-         </div>
-      </section>
-
-      {/* --- 3. I SERVIZI (SPLIT SECTION) --- */}
-      <section className="h-[80vh] md:h-screen flex flex-col md:flex-row border-y border-primary/20 bg-black">
-        <motion.div 
-           className="relative w-full md:w-1/2 h-full border-b md:border-b-0 md:border-r border-primary/20 group cursor-pointer overflow-hidden"
-           onHoverStart={() => setActiveSplit('left')}
-           onHoverEnd={() => setActiveSplit('both')}
-           animate={{ flex: activeSplit === 'left' ? 2 : 1 }}
-           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-           <img src={detailImg} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
-           
-           <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full bg-gradient-to-t from-black via-black/50 to-transparent">
-              <ChefHat className="text-white w-12 h-12 mb-4" />
-              <h3 className="text-5xl md:text-7xl font-heading text-white mb-2">PRIVATE<br/>EVENT</h3>
-              <p className="text-white/90 text-lg max-w-sm translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                 Matrimoni, cene private, eventi in villa. Portiamo l'attrezzatura, lo chef e la qualità del ristorante ovunque.
-              </p>
-           </div>
-        </motion.div>
-
-        <motion.div 
-           className="relative w-full md:w-1/2 h-full group cursor-pointer overflow-hidden"
-           onHoverStart={() => setActiveSplit('right')}
-           onHoverEnd={() => setActiveSplit('both')}
-           animate={{ flex: activeSplit === 'right' ? 2 : 1 }}
-           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        >
-           <img src={truckImg} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500" />
-           
-           <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full bg-gradient-to-t from-black via-black/50 to-transparent">
-              <Truck className="text-white w-12 h-12 mb-4" />
-              <h3 className="text-5xl md:text-7xl font-heading text-white mb-2">STREET<br/>FOOD</h3>
-              <p className="text-white/90 text-lg max-w-sm translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                 Giustino on the road. Per festival, open day aziendali e feste informali che lasciano il segno.
-              </p>
-           </div>
-        </motion.div>
-      </section>
-
-      {/* --- 4. IL MENU (GALLERY PULITA) --- */}
-      <section className="py-32 px-6 md:px-12 bg-background text-foreground overflow-hidden">
-         <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b-2 border-primary/10 pb-10">
-               <div>
-                  <span className="uppercase tracking-widest text-xs font-bold text-primary/60 mb-2 block">Dalla Terra al Piatto</span>
-                  <h2 className="text-6xl md:text-9xl font-heading leading-none text-primary">IL GUSTO</h2>
-               </div>
-               <p className="text-right md:max-w-md text-xl text-primary/70 font-light mt-6 md:mt-0 font-heading">
-                  Stagionalità, territorio e zero sprechi. <br/>
-                  Creiamo il menù su misura per il tuo evento.
-               </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-               {[
-                  { title: "Benvenuto", desc: "Gnocco Fritto, Salumi DOP & Finger Food", img: food1 },
-                  { title: "Tradizione", desc: "Pisarei e Fasö croccanti & Pasta Fresca", img: food2 },
-                  { title: "Gourmet", desc: "Montanarina con Coppa Piacentina", img: food3 }
-               ].map((item, i) => (
-                  <motion.div 
-                     key={i}
-                     initial={{ opacity: 0, y: 50 }}
-                     whileInView={{ opacity: 1, y: 0 }}
-                     viewport={{ once: true }}
-                     transition={{ delay: i * 0.2, duration: 0.6 }}
-                     className="group cursor-pointer"
-                  >
-                     <div className="aspect-[3/4] overflow-hidden bg-primary/5 mb-8 relative rounded-sm shadow-sm">
-                        <img src={item.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                        <div className="absolute top-4 left-4 border border-white/50 bg-white/30 backdrop-blur-md px-4 py-1 text-white text-xs font-bold tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">
-                           Specialità
-                        </div>
-                     </div>
-                     <h3 className="text-4xl font-heading mb-2 text-primary group-hover:translate-x-2 transition-transform">{item.title}</h3>
-                     <p className="opacity-70 font-sans text-lg border-l-2 border-primary/20 pl-4 group-hover:border-primary transition-colors">{item.desc}</p>
-                  </motion.div>
-               ))}
-            </div>
-         </div>
-      </section>
-
-      {/* --- 5. CONTATTI (SPLIT FORM & CONTACTS) --- */}
-      <section className="py-24 md:py-32 px-6 bg-background relative">
-         <div className="max-w-7xl mx-auto bg-white shadow-2xl overflow-hidden flex flex-col md:flex-row rounded-lg">
-            
-            {/* LATO SX: INFO & CONTATTI (Verde) */}
-            <div className="md:w-5/12 bg-primary text-background p-10 md:p-16 flex flex-col justify-between relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
-                    <Utensils size={200} strokeWidth={0.5} />
-                </div>
-
-                <div className="relative z-10">
-                    <span className="text-xs font-bold tracking-[0.2em] uppercase opacity-60 mb-6 block">Contattaci</span>
-                    <h2 className="text-5xl md:text-6xl font-heading leading-none mb-8">PARLIAMONE.</h2>
-                    <p className="font-sans font-light opacity-80 text-lg leading-relaxed mb-12">
-                        Hai un'idea in mente? Che sia un matrimonio, un evento aziendale o una festa privata, siamo pronti a realizzarla.
-                    </p>
-                    
-                    <div className="space-y-6 font-sans">
-                        <div className="flex items-center gap-4 opacity-90 hover:opacity-100 transition-opacity">
-                            <Mail className="w-5 h-5" />
-                            <a href="mailto:info@giustefoodtruck.com" className="hover:underline">info@giustefoodtruck.com</a>
-                        </div>
-                        <div className="flex items-center gap-4 opacity-90">
-                            <MapPin className="w-5 h-5" />
-                            <span>Piacenza & Nord Italia</span>
-                        </div>
-                        <div className="flex items-center gap-4 opacity-90">
-                            <Truck className="w-5 h-5" />
-                            <span>Disponibili 7 giorni su 7</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="mt-12 relative z-10">
-                    <p className="text-xs uppercase tracking-widest opacity-40 mb-4">Seguici</p>
-                    <div className="flex gap-4">
-                        <a href="#" className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-all"><Instagram size={18} /></a>
-                        <a href="#" className="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center hover:bg-white hover:text-primary transition-all"><Facebook size={18} /></a>
-                    </div>
-                </div>
-            </div>
-
-            {/* LATO DX: FORM (Bianco Pulito) */}
-            <div className="md:w-7/12 p-10 md:p-16 bg-white">
-               <form onSubmit={handleSubmit} className="space-y-10">
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                     <div className="relative group">
-                        <input 
-                           type="text" 
-                           value={formData.name}
-                           onChange={e => setFormData({...formData, name: e.target.value})}
-                           className="block w-full border-0 border-b border-gray-300 py-3 bg-transparent text-primary focus:border-primary focus:ring-0 transition-colors placeholder:text-transparent peer" 
-                           placeholder="Nome"
-                           id="name"
-                           required
-                        />
-                        <label htmlFor="name" className="absolute left-0 top-3 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-primary peer-focus:font-bold peer-[&:not(:placeholder-shown)]:-top-4 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-primary uppercase tracking-widest cursor-text pointer-events-none">
-                            Nome e Cognome
-                        </label>
-                     </div>
-
-                     <div className="relative group">
-                        <input 
-                           type="email" 
-                           value={formData.email}
-                           onChange={e => setFormData({...formData, email: e.target.value})}
-                           className="block w-full border-0 border-b border-gray-300 py-3 bg-transparent text-primary focus:border-primary focus:ring-0 transition-colors placeholder:text-transparent peer" 
-                           placeholder="Email"
-                           id="email"
-                           required
-                        />
-                        <label htmlFor="email" className="absolute left-0 top-3 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-primary peer-focus:font-bold peer-[&:not(:placeholder-shown)]:-top-4 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-primary uppercase tracking-widest cursor-text pointer-events-none">
-                            Email
-                        </label>
-                     </div>
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+                  className="group relative h-[55vh] sm:h-[60vh] overflow-hidden rounded-giuste cursor-pointer shadow-lg"
+               >
+                  {/* Uso heroImage come placeholder professionale, o un'altra img aziendale */}
+                  <img src={logistica} className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors"></div>
+                  <div className="absolute bottom-0 left-0 p-6 sm:p-10 w-full bg-gradient-to-t from-primary/90 to-transparent text-[#ececec]">
+                     <Briefcase className="mb-4 w-8 h-8" />
+                     <h3 className="text-3xl sm:text-4xl md:text-5xl font-heading font-black mb-2">Eventi Aziendali</h3>
+                     <p className="font-light opacity-90 max-w-md text-sm sm:text-base">Cene di gala, coffee break e light lunch. Soluzioni professionali per il tuo business.</p>
                   </div>
+               </motion.div>
+            </div>
+         </div>
+      </section>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                     <div className="relative group">
-                        <input 
-                           type="date" 
-                           value={formData.date}
-                           onChange={e => setFormData({...formData, date: e.target.value})}
-                           className="block w-full border-0 border-b border-gray-300 py-3 bg-transparent text-primary focus:border-primary focus:ring-0 transition-colors placeholder:text-transparent peer"
-                           id="date" 
-                        />
-                        <label htmlFor="date" className="absolute left-0 -top-4 text-xs text-primary font-bold uppercase tracking-widest">
-                            Data Indicativa
-                        </label>
-                     </div>
+      {/* --- MENU GALLERY --- */}
+      <section className="py-20 sm:py-24 px-6 max-w-7xl mx-auto">
+         <SectionTitle subtitle="Il Gusto">Menu Sartoriale</SectionTitle>
+         
+         <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+                visible: {
+                    transition: { staggerChildren: 0.1 }
+                }
+            }}
+         >
+            <motion.div 
+               variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+               }}
+               className="md:col-span-1 space-y-6"
+            >
+               <div className="bg-white p-6 sm:p-8 rounded-giuste border border-primary/10 text-center shadow-sm hover:shadow-md transition-shadow">
+                  <h4 className="text-2xl sm:text-3xl font-heading font-black mb-2">Tradizione</h4>
+                  <p className="text-sm opacity-70 mb-6 font-light">Pisarei e Fasö, Anolini, Tortelli.</p>
+                  <img src={food2} className="w-full aspect-square object-cover rounded-giuste shadow-sm" />
+               </div>
+            </motion.div>
+            
+            <motion.div 
+               variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+               }}
+               className="md:col-span-1 mt-0 md:mt-8 lg:mt-16 space-y-6"
+            >
+               <div className="bg-white p-6 sm:p-8 rounded-giuste border border-primary/10 text-center shadow-sm hover:shadow-md transition-shadow">
+                  <h4 className="text-2xl sm:text-3xl font-heading font-black mb-2">Gourmet</h4>
+                  <p className="text-sm opacity-70 mb-6 font-light">Montanarina, Salumi DOP, Finger Food.</p>
+                  <img src={food3} className="w-full aspect-square object-cover rounded-giuste shadow-sm" />
+               </div>
+            </motion.div>
 
-                     <div className="relative group">
+            <motion.div 
+               variants={{
+                  hidden: { opacity: 0, y: 50 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+               }}
+               className="md:col-span-1 space-y-6"
+            >
+               <div className="bg-white p-6 sm:p-8 rounded-giuste border border-primary/10 text-center shadow-sm hover:shadow-md transition-shadow">
+                  <h4 className="text-2xl sm:text-3xl font-heading font-black mb-2">Aperitivi</h4>
+                  <p className="text-sm opacity-70 mb-6 font-light">Polpette, Panini Gourmet, Fritti d'autore.</p>
+                  <img src={food1} className="w-full aspect-square object-cover rounded-giuste shadow-sm" />
+               </div>
+            </motion.div>
+         </motion.div>
+      </section>
+
+      {/* --- CONTATTI --- */}
+      <section id="contact" className="py-24 bg-primary text-[#ececec] px-6">
+         <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-16">
+               <span className="text-xs font-bold tracking-[0.2em] uppercase opacity-60 mb-4 block">Parliamone</span>
+               <h2 className="text-3xl sm:text-5xl md:text-7xl font-heading font-black">ORGANIZZIAMO?</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+               <div className="space-y-8 font-light text-lg">
+                  <div className="absolute top-0 right-0 p-10 opacity-10 pointer-events-none">
+                      <Utensils size={200} strokeWidth={0.5} />
+                  </div>
+                  <p className="text-2xl">Raccontaci la tua idea.</p>
+                  <p className="opacity-80">Ti risponderemo entro 24h con una proposta cucita su misura per il tuo evento privato o aziendale.</p>
+                  <div className="space-y-6 text-base mt-8 pt-8 border-t border-[#ececec]/20 relative z-10">
+                     <a href="mailto:info@giustefoodtruck.it" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><Mail className="w-6 h-6"/> info@giustefoodtruck.it</a>
+                     <a href="tel:+393881589905" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><Phone className="w-6 h-6"/> +39 388 1589905</a>
+                     <div className="flex items-center gap-4 opacity-70"><MapPin className="w-6 h-6"/> Piacenza e Nord Italia</div>
+                  </div>
+               </div>
+
+               <motion.form 
+                  onSubmit={handleSubmit} 
+                  className="bg-white/5 p-6 sm:p-8 rounded-3xl border border-white/10 backdrop-blur-sm shadow-2xl relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, amount: 0.1 }}
+                  variants={{
+                      visible: {
+                          transition: { staggerChildren: 0.1 }
+                      }
+                  }}
+               >
+                  <motion.div 
+                     variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                     }}
+                     className="space-y-2 col-span-1"
+                  >
+                     <label className="text-xs uppercase tracking-widest opacity-70 font-bold ml-1">Nome</label>
+                     <input 
+                       type="text" 
+                       placeholder="Il tuo nome"
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-lg focus:border-white/50 focus:bg-white/10 outline-none transition-all placeholder:text-white/20"
+                       value={formData.name}
+                       onChange={e => setFormData({...formData, name: e.target.value})}
+                       required
+                     />
+                  </motion.div>
+
+                  <motion.div 
+                     variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                     }}
+                     className="space-y-2 col-span-1"
+                  >
+                     <label className="text-xs uppercase tracking-widest opacity-70 font-bold ml-1">Email</label>
+                     <input 
+                       type="email" 
+                       placeholder="tua@email.com"
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-lg focus:border-white/50 focus:bg-white/10 outline-none transition-all placeholder:text-white/20"
+                       value={formData.email}
+                       onChange={e => setFormData({...formData, email: e.target.value})}
+                       required
+                     />
+                  </motion.div>
+                  
+                  <motion.div 
+                     variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                     }}
+                     className="space-y-2 col-span-1 md:col-span-2 relative"
+                  >
+                     <label className="text-xs uppercase tracking-widest opacity-70 font-bold ml-1">Tipo Evento</label>
+                     <div className="relative">
                         <select 
                            value={formData.type}
                            onChange={e => setFormData({...formData, type: e.target.value})}
-                           className="block w-full border-0 border-b border-gray-300 py-3 bg-transparent text-primary focus:border-primary focus:ring-0 transition-colors cursor-pointer"
+                           className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-lg focus:border-white/50 focus:bg-white/10 outline-none transition-all appearance-none cursor-pointer text-[#ececec]"
                         >
-                           <option value="private">Catering Privato</option>
-                           <option value="wedding">Matrimonio</option>
-                           <option value="corporate">Evento Aziendale</option>
-                           <option value="truck">Food Truck</option>
+                           <option value="private" className="bg-[#1a1a1a] text-white">Catering Privato</option>
+                           <option value="wedding" className="bg-[#1a1a1a] text-white">Matrimonio</option>
+                           <option value="corporate" className="bg-[#1a1a1a] text-white">Evento Aziendale</option>
                         </select>
-                        <label className="absolute left-0 -top-4 text-xs text-primary font-bold uppercase tracking-widest">
-                            Tipo di Evento
-                        </label>
+                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none" size={20} />
                      </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="relative group">
-                      <textarea 
-                        rows="4"
-                        value={formData.message}
-                        onChange={e => setFormData({...formData, message: e.target.value})}
-                        className="block w-full border-0 border-b border-gray-300 py-3 bg-transparent text-primary focus:border-primary focus:ring-0 transition-colors placeholder:text-transparent peer resize-none"
-                        placeholder="Messaggio"
-                        id="message"
-                      ></textarea>
-                      <label htmlFor="message" className="absolute left-0 top-3 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-focus:-top-4 peer-focus:text-xs peer-focus:text-primary peer-focus:font-bold peer-[&:not(:placeholder-shown)]:-top-4 peer-[&:not(:placeholder-shown)]:text-xs peer-[&:not(:placeholder-shown)]:text-primary uppercase tracking-widest cursor-text pointer-events-none">
-                          Raccontaci i dettagli
-                      </label>
-                  </div>
+                  <motion.div 
+                     variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                     }}
+                     className="space-y-2 col-span-1 md:col-span-2"
+                  >
+                     <label className="text-xs uppercase tracking-widest opacity-70 font-bold ml-1">Messaggio</label>
+                     <textarea 
+                       rows="4"
+                       placeholder="Raccontaci i dettagli del tuo evento..."
+                       className="w-full bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-lg focus:border-white/50 focus:bg-white/10 outline-none transition-all resize-none placeholder:text-white/20"
+                       value={formData.message}
+                       onChange={e => setFormData({...formData, message: e.target.value})}
+                     ></textarea>
+                  </motion.div>
 
-                  <div className="pt-4 flex items-center justify-between">
-                     <button 
+                  <motion.div 
+                    className="col-span-1 md:col-span-2 pt-2"
+                    variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                     }}
+                  >
+                      <button 
                         disabled={status === 'sending'}
-                        className="bg-primary text-white px-10 py-4 text-lg font-heading tracking-widest uppercase hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl active:scale-[0.98] disabled:opacity-50"
-                     >
-                        {status === 'sending' ? 'Invio...' : 'Invia Richiesta'}
-                     </button>
-                     
-                     {status === 'success' && (
-                         <motion.div 
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="text-green-600 font-bold flex items-center gap-2"
-                         >
-                             <CheckCircle2 size={20} />
-                             <span>Messaggio Inviato!</span>
-                         </motion.div>
-                     )}
-                  </div>
-               </form>
+                        className="w-full bg-[#ececec] text-primary py-4 rounded-xl text-lg font-bold uppercase tracking-widest hover:bg-white hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg disabled:opacity-70 disabled:pointer-events-none"
+                      >
+                         {status === 'sending' ? 'Invio...' : 'Invia Richiesta'}
+                      </button>
+                      {status === 'success' && <p className="text-green-400 text-center font-bold mt-4 animate-pulse">Messaggio inviato con successo!</p>}
+                  </motion.div>
+               </motion.form>
             </div>
          </div>
       </section>
 
-      {/* --- FOOTER: FINAL DESIGN (Massive & Clean) --- */}
-      <footer className="bg-[#1a1a1a] text-[#F4F1EA] pt-24 pb-12 px-6 overflow-hidden relative">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 mb-24 relative z-10">
-            {/* Colonna Brand */}
-            <div className="md:col-span-5">
-                <span className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-6 block">Est. 2018</span>
-                <h3 className="text-3xl font-heading leading-tight mb-6">
-                    Portiamo l'atmosfera <span className="text-primary">Giustè</span> ovunque tu sia.
-                </h3>
-                <p className="text-white/40 font-light max-w-sm">
-                    Street food ribelle e catering sartoriale. <br/>
-                    Piacenza e tutto il Nord Italia.
-                </p>
+      {/* --- FOOTER --- */}
+      <footer className="bg-[#1a1a1a] text-[#ececec] py-16 sm:py-20 px-6 border-t border-[#ececec]/10">
+         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 sm:gap-12 mb-16 sm:mb-20 text-center md:text-left">
+            <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8 text-center sm:text-left">
+               <div>
+                  <h3 className="font-heading font-black text-xl sm:text-2xl mb-6 text-[#ececec] tracking-wider">Menu</h3>
+                  <ul className="space-y-3 text-sm opacity-60 font-bold uppercase tracking-widest">
+                     <li><a href="#" className="hover:text-white hover:opacity-100 transition-all">Home</a></li>
+                     <li><a href="#" className="hover:text-white hover:opacity-100 transition-all">Catering</a></li>
+                     <li><a href="#" className="hover:text-white hover:opacity-100 transition-all">Servizi</a></li>
+                     <li><a href="#contact" className="hover:text-white hover:opacity-100 transition-all">Contatti</a></li>
+                  </ul>
+               </div>
+               <div>
+                  <h3 className="font-heading font-black text-xl sm:text-2xl mb-6 text-[#ececec] tracking-wider">Contatti</h3>
+                  <ul className="space-y-3 text-sm sm:text-base opacity-80 font-medium">
+                     <li><a href="mailto:info@giustefoodtruck.it" className="hover:text-white hover:opacity-100 transition-all block">info@giustefoodtruck.it</a></li>
+                     <li><a href="tel:+393881589905" className="hover:text-white hover:opacity-100 transition-all block">(+39) 388 158 9905</a></li>
+                  </ul>
+               </div>
             </div>
-
-            {/* Colonna Contatti */}
-            <div className="md:col-span-3 md:col-start-7">
-                <h4 className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-white/30">Contatti</h4>
-                <ul className="space-y-4 font-sans text-lg">
-                    <li>
-                        <a href="mailto:info@giustefoodtruck.com" className="hover:text-primary transition-colors flex items-center gap-3 group">
-                            <span className="w-2 h-2 rounded-full bg-primary scale-0 group-hover:scale-100 transition-transform"/>
-                            info@giustefoodtruck.com
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:+393331234567" className="hover:text-primary transition-colors flex items-center gap-3 group">
-                            <span className="w-2 h-2 rounded-full bg-primary scale-0 group-hover:scale-100 transition-transform"/>
-                            +39 333 123 4567
-                        </a>
-                    </li>
-                </ul>
+            <div className="md:col-span-2 flex flex-col items-center md:items-end justify-center">
+               <h2 className="text-[10vw] sm:text-[12vw] md:text-[8vw] font-heading font-black leading-none text-[#ececec] opacity-10 select-none hover:opacity-20 transition-opacity duration-500">
+                  GIUSTÈ
+               </h2>
             </div>
-
-            {/* Colonna Social */}
-            <div className="md:col-span-3">
-                <h4 className="text-xs font-bold tracking-[0.2em] uppercase mb-8 text-white/30">Seguici</h4>
-                <ul className="space-y-4 font-sans text-lg">
-                    <li>
-                        <a href="#" className="hover:text-primary transition-colors flex items-center gap-3 group">
-                            <Instagram size={20} />
-                            <span className="relative">
-                                Instagram
-                                <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full"/>
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" className="hover:text-primary transition-colors flex items-center gap-3 group">
-                            <Facebook size={20} />
-                            <span className="relative">
-                                Facebook
-                                <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-primary transition-all group-hover:w-full"/>
-                            </span>
-                        </a>
-                    </li>
-                </ul>
+         </div>
+         
+         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center pt-8 border-t border-[#ececec]/10 text-xs opacity-40 uppercase tracking-widest font-bold">
+            <p className="order-2 md:order-1 mt-6 md:mt-0">© {new Date().getFullYear()} Giustè P.IVA 1234567890</p>
+            <div className="order-1 md:order-2 flex gap-6">
+               <a href="https://www.instagram.com/giustefoodtruck/" className="hover:text-white hover:opacity-100 transition-all"><Instagram size={20}/></a>
+               <a href="#" className="hover:text-white hover:opacity-100 transition-all"><Facebook size={20}/></a>
             </div>
-        </div>
-
-        {/* MASSIVE FOOTER TEXT */}
-        <div className="border-t border-white/10 pt-12 flex flex-col md:flex-row justify-between items-end">
-            <div className="w-full">
-                <h1 className="text-[18vw] leading-[0.75] font-heading font-black text-primary/20 select-none text-center md:text-left tracking-tighter">
-                    GIUSTÈ
-                </h1>
-            </div>
-            <div className="w-full md:w-auto text-center md:text-right pb-4 md:pb-8 whitespace-nowrap">
-                 <p className="text-xs text-white/20 uppercase tracking-widest">© {new Date().getFullYear()} All Rights Reserved</p>
-            </div>
-        </div>
+         </div>
       </footer>
 
     </div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,50 +7,60 @@
 @layer base {
   :root {
     /* Brand Giustè: Verde #325541 -> HSL 146 26% 26% */
-    /* Brand Giustè: Crema #F4F1EA -> HSL 42 27% 94% */
+    /* Sfondo Grigio #ececec -> HSL 0 0% 93% */
 
-    --background: 42 27% 94%;      /* Sfondo Crema */
+    --background: 0 0% 93%;        /* Sfondo Grigio #ececec */
     --foreground: 146 26% 26%;     /* Testo Verde Scuro */
 
-    --card: 42 27% 94%;
+    --card: 0 0% 93%;
     --card-foreground: 146 26% 26%;
  
     --primary: 146 26% 26%;        /* VERDE GIUSTÈ */
-    --primary-foreground: 42 27% 94%; 
+    --primary-foreground: 0 0% 93%; 
  
     --muted: 146 26% 90%;
     --muted-foreground: 146 26% 40%;
  
-    --accent: 146 26% 35%;         /* Verde leggermente più chiaro per hover */
-    --accent-foreground: 42 27% 94%;
+    --accent: 146 26% 35%;
+    --accent-foreground: 0 0% 93%;
 
     --border: 146 26% 85%;
     --input: 146 26% 26%;
     --ring: 146 26% 26%;
     
-    --radius: 0rem; /* Nessun bordo arrotondato per stile "Strong" */
+    --radius: 0rem;
   }
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
 
-  /* Typography Override per il Brand */
+  /* Override: Tutti i titoli ora sono Montserrat */
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 0.05em;
+    font-family: 'Montserrat', sans-serif;
+    letter-spacing: -0.02em; /* Leggermente più stretto per i titoli bold */
     text-transform: uppercase;
+    font-weight: 800; /* Extra Bold per compensare la perdita di Bebas */
   }
 }
 
 @layer components {
-  /* Input personalizzati stile Giustè */
   .form-input {
-    @apply block w-full bg-transparent border-0 border-b-2 border-primary/30 px-0 py-4 text-xl transition-all duration-300 placeholder:text-primary/40 focus:border-primary focus:ring-0 focus:outline-none text-primary;
+    @apply block w-full bg-transparent border-0 border-b-2 border-primary/30 px-0 py-4 text-xl transition-all duration-300 placeholder:text-primary/40 focus:border-primary focus:ring-0 focus:outline-none text-primary font-sans;
   }
   
-  /* Bottone primario cazzuto */
   .btn-primary {
-    @apply bg-primary text-primary-foreground px-8 py-4 text-xl font-heading tracking-widest uppercase hover:bg-primary/90 transition-all active:scale-95 disabled:opacity-50 border border-transparent;
+    @apply bg-primary text-primary-foreground px-8 py-4 text-xl font-heading tracking-widest uppercase hover:bg-primary/90 transition-all active:scale-95 disabled:opacity-50 border border-transparent font-bold;
+  }
+
+  /* Stroke utility for hero */
+  .stroke-text-white {
+    -webkit-text-stroke: 2px rgba(236,236,236,0.95);
+    color: transparent;
+  }
+
+  /* Hero overlay helper */
+  .hero-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.6) 100%);
   }
 }
