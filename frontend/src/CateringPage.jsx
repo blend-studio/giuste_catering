@@ -262,7 +262,30 @@ const CateringPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    setTimeout(() => setStatus('success'), 2000);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/catering-inquiry', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Something went wrong');
+      }
+
+      const data = await response.json();
+      console.log('Success:', data);
+      setStatus('success');
+      setFormData({ name: '', email: '', type: 'private', message: '' }); // Clear form on success
+    } catch (error) {
+      console.error('Error:', error);
+      setStatus('error');
+    }
   };
 
   return (
@@ -585,6 +608,7 @@ const CateringPage = () => {
                          {status === 'sending' ? 'Invio...' : 'Invia Richiesta'}
                       </button>
                       {status === 'success' && <p className="text-green-600 text-center font-bold mt-4 animate-pulse">Messaggio inviato con successo!</p>}
+                      {status === 'error' && <p className="text-red-600 text-center font-bold mt-4">Errore nell'invio del messaggio. Riprova più tardi.</p>}
                   </motion.div>
                </motion.form>
             </div>
