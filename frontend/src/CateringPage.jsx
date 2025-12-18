@@ -176,7 +176,7 @@ const FloatingContactButton = () => {
         <motion.a
           href="tel:+393881589905"
           variants={itemVariants}
-          className="w-12 h-12 bg-[#00d775] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          className="w-14 h-14 bg-[#00d775] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
         >
           <Phone size={20} />
         </motion.a>
@@ -185,7 +185,7 @@ const FloatingContactButton = () => {
         <motion.a
           href="https://wa.me/393881589905"
           variants={itemVariants}
-          className="w-12 h-12 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          className="w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
         >
           <WhatsAppIcon size={20} />
         </motion.a>
@@ -194,7 +194,7 @@ const FloatingContactButton = () => {
         <motion.a
           href="mailto:info@giustefoodtruck.it"
           variants={itemVariants}
-          className="w-12 h-12 bg-[#ff4b55] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          className="w-14 h-14 bg-[#ff4b55] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
         >
           <Mail size={20} />
         </motion.a>
@@ -203,7 +203,7 @@ const FloatingContactButton = () => {
         <motion.a
           href="https://instagram.com"
           variants={itemVariants}
-          className="w-12 h-12 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          className="w-14 h-14 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
         >
           <Instagram size={20} />
         </motion.a>
