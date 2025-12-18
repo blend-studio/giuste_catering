@@ -4,7 +4,8 @@ import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle
 
 // --- CONFIGURATION ---
 // Hardcoded production URL to ensure deployment works immediately
-const API_BASE_URL = import.meta.env.PROD ? 'https://giustefoodtruck.com/catering' : 'http://localhost:8000';
+// Changed to subdirectory path catering/api
+const API_BASE_URL = import.meta.env.PROD ? 'https://giustefoodtruck.com/catering/api' : 'http://localhost:8000';
 
 const WhatsAppIcon = ({ size = 24, className = "" }) => (
   <svg 
