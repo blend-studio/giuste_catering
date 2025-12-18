@@ -243,8 +243,9 @@ const Navbar = () => {
                 <a href="mailto:info@giustefoodtruck.it" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.it</a>
              </div>
              <div className="flex items-center gap-4">
-                 <a href="https://instagram.com" className="hover:opacity-80 transition-opacity"><Instagram size={16} /></a>
-                 <a href="https://wa.me/393881589905" className="hover:opacity-80 transition-opacity"><WhatsAppIcon size={16} /></a>
+                 <div className="bg-white rounded-full flex items-center justify-center p-1.5">
+                    <Instagram size={16} className="text-[#2b4432]" />
+                  </div>
              </div>
           </div>
        </div>
