@@ -247,8 +247,12 @@ const ServiceCharterSection = () => {
   const handleDownload = async (e) => {
     e.preventDefault();
     setStatus('loading');
+    const apiUrl = `${API_BASE_URL}/api/download-charter`;
+    console.log('--- Downloading Service Charter ---');
+    console.log('Target URL:', apiUrl);
+    
     try {
-      const response = await fetch(`${API_BASE_URL}/api/download-charter`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -257,7 +261,13 @@ const ServiceCharterSection = () => {
         body: JSON.stringify({ email }),
       });
 
-      if (!response.ok) throw new Error('Errore nel download');
+      console.log('Response Status:', response.status);
+
+      if (!response.ok) {
+         const text = await response.text(); // Read text first to see HTML errors
+         console.error('API Error Body:', text);
+         throw new Error('Errore nel download: ' + response.statusText);
+      }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -270,7 +280,7 @@ const ServiceCharterSection = () => {
       a.remove();
       setStatus('success');
     } catch (error) {
-      console.error(error);
+      console.error('Download Error:', error);
       setStatus('error');
     }
   };
@@ -431,9 +441,13 @@ const CateringPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
+    const apiUrl = `${API_BASE_URL}/api/catering-inquiry`;
+    console.log('--- Submitting Inquiry ---');
+    console.log('Target URL:', apiUrl);
+    console.log('Payload:', formData);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/catering-inquiry`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -442,17 +456,20 @@ const CateringPage = () => {
         body: JSON.stringify(formData),
       });
 
+      console.log('Response Status:', response.status, response.statusText);
+
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ message: 'Invalid JSON response' })); // Handle non-JSON errors
+        console.error('API Error Response:', errorData);
         throw new Error(errorData.message || 'Something went wrong');
       }
 
       const data = await response.json();
-      console.log('Success:', data);
+      console.log('Success Response:', data);
       setStatus('success');
-      setFormData({ name: '', email: '', type: 'private', message: '' }); // Clear form on success
+      setFormData({ name: '', email: '', type: 'private', date: '', message: '' }); // Clear form on success
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Fetch Error:', error);
       setStatus('error');
     }
   };
