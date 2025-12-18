@@ -27,6 +27,6 @@ class ServiceCharterController extends Controller
             return response()->json(['message' => 'File non trovato.'], 404);
         }
 
-        return Storage::disk('local')->download($path, 'Carta-Servizi-Giuste.pdf');
+        return response()->download(Storage::disk('local')->path($path), 'Carta-Servizi-Giuste.pdf');
     }
 }
