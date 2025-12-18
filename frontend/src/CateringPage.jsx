@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { ArrowRight, ChefHat, Mail, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout } from 'lucide-react';
+import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout } from 'lucide-react';
 
 const WhatsAppIcon = ({ size = 24, className = "" }) => (
   <svg 
@@ -168,7 +168,9 @@ const Navbar = () => {
        <div className={`bg-[#2b4432] text-white py-3 px-6 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden py-0' : 'h-auto'}`}>
           <div className="max-w-7xl mx-auto flex justify-between items-center text-base font-medium tracking-wide">
              <div className="flex items-center gap-2">
-                <Mail size={16} />
+                <div className="bg-white rounded-full flex items-center justify-center p-1.5">
+                  <Mails size={16} className="text-[#2b4432]" />
+                </div>
                 <a href="mailto:info@giustefoodtruck.it" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.it</a>
              </div>
              <div className="flex items-center gap-4">
