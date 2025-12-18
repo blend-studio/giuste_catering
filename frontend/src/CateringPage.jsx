@@ -2,6 +2,9 @@ import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout, MessageSquareText } from 'lucide-react';
 
+// --- CONFIGURATION ---
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 const WhatsAppIcon = ({ size = 24, className = "" }) => (
   <svg 
     xmlns="http://www.w3.org/2000/svg" 
@@ -244,7 +247,7 @@ const ServiceCharterSection = () => {
     e.preventDefault();
     setStatus('loading');
     try {
-      const response = await fetch('http://localhost:8000/api/download-charter', {
+      const response = await fetch(`${API_BASE_URL}/api/download-charter`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -429,7 +432,7 @@ const CateringPage = () => {
     setStatus('sending');
 
     try {
-      const response = await fetch('http://localhost:8000/api/catering-inquiry', {
+      const response = await fetch(`${API_BASE_URL}/api/catering-inquiry`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
