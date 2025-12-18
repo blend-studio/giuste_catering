@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\CateringInquiry;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CateringRequestMail;
+use App\Mail\CateringConfirmationMail;
 
 class CateringController extends Controller
 {
@@ -30,8 +31,17 @@ class CateringController extends Controller
         ]);
 
         // 2. Invia Mail all'admin
-        // Assicurati di aver configurato .env con SMTP
-        Mail::to('info@giustefoodtruck.com')->send(new CateringRequestMail($validated));
+        $adminEmail = env('MAIL_TO', 'info@blendstudio.it');
+        $ccEmail = env('MAIL_CC');
+
+        $mail = Mail::to($adminEmail);
+        if ($ccEmail) {
+            $mail->cc($ccEmail);
+        }
+        $mail->send(new CateringRequestMail($validated));
+
+        // 3. Invia Mail di conferma al cliente
+        Mail::to($validated['email'])->send(new CateringConfirmationMail($validated));
 
         return response()->json(['message' => 'Richiesta inviata con successo!'], 201);
     }
