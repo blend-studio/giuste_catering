@@ -253,7 +253,7 @@ const Navbar = () => {
 // --- PAGE COMPONENT ---
 
 const CateringPage = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', type: 'private', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', type: 'private', date: '', message: '' });
   const [status, setStatus] = useState('');
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
@@ -575,6 +575,22 @@ const CateringPage = () => {
                         </select>
                         <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 opacity-50 pointer-events-none text-primary" size={20} />
                      </div>
+                  </motion.div>
+
+                  <motion.div
+                     variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+                     }}
+                     className="space-y-2 col-span-1 md:col-span-2"
+                  >
+                     <label className="text-xs uppercase tracking-widest opacity-70 font-bold ml-1 text-primary">Data Evento</label>
+                     <input
+                       type="date"
+                       className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3 text-lg text-primary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-gray-400"
+                       value={formData.date}
+                       onChange={e => setFormData({...formData, date: e.target.value})}
+                     />
                   </motion.div>
 
                   <motion.div 
