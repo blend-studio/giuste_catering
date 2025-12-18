@@ -234,7 +234,7 @@ const Navbar = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
        {/* Top Bar - Hidden on scroll for cleaner look, or kept if preferred. Matching the screenshot's dark green */}
-       <div className={`bg-[#2b4432] text-white py-3 px-6 transition-all duration-300 ${isScrolled ? 'h-0 overflow-hidden py-0' : 'h-auto'}`}>
+       <div className={`bg-[#2b4432] text-white px-6 transition-all duration-500 ease-in-out overflow-hidden ${isScrolled ? 'max-h-0 opacity-0' : 'max-h-20 py-3 opacity-100'}`}>
           <div className="max-w-7xl mx-auto flex justify-between items-center text-base font-medium tracking-wide">
              <div className="flex items-center gap-2">
                 <div className="bg-white rounded-full flex items-center justify-center p-1.5">
