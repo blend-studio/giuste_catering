@@ -3,7 +3,8 @@ import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout, MessageSquareText } from 'lucide-react';
 
 // --- CONFIGURATION ---
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Hardcoded production URL to ensure deployment works immediately
+const API_BASE_URL = import.meta.env.PROD ? 'https://giustefoodtruck.com' : 'http://localhost:8000';
 
 const WhatsAppIcon = ({ size = 24, className = "" }) => (
   <svg 
