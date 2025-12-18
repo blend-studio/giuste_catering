@@ -143,6 +143,75 @@ const NoiseOverlay = () => (
   </div>
 );
 
+const ServiceCharterSection = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState('idle');
+
+  const handleDownload = async (e) => {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const response = await fetch('http://localhost:8000/api/download-charter', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) throw new Error('Errore nel download');
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Carta-Servizi-Giuste.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+      setStatus('success');
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
+  };
+
+  return (
+    <section className="py-20 bg-primary/5 px-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-giuste p-8 md:p-12 shadow-xl flex flex-col md:flex-row items-center gap-10 border border-primary/10">
+        <div className="flex-1 space-y-4 text-center md:text-left">
+           <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto md:mx-0 mb-4">
+              <Briefcase className="text-primary w-8 h-8" />
+           </div>
+           <h3 className="text-3xl font-heading font-bold text-primary">Carta dei Servizi</h3>
+           <p className="opacity-80">Scarica il PDF per scoprire nel dettaglio le nostre proposte e modalità di servizio.</p>
+        </div>
+        
+        <form onSubmit={handleDownload} className="flex-1 w-full flex flex-col gap-4">
+            <input 
+              type="email" 
+              placeholder="La tua email" 
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3 text-lg outline-none focus:border-primary transition-all text-primary placeholder:text-primary/40"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button 
+              disabled={status === 'loading'}
+              className="w-full bg-primary text-white py-3 rounded-xl font-bold uppercase tracking-widest hover:bg-primary/90 transition-all disabled:opacity-70 shadow-lg"
+            >
+              {status === 'loading' ? 'Scaricamento...' : 'Scarica PDF'}
+            </button>
+            {status === 'error' && <p className="text-red-500 text-sm text-center">Si è verificato un errore.</p>}
+            {status === 'success' && <p className="text-green-600 text-sm text-center font-bold">Download avviato!</p>}
+        </form>
+      </div>
+    </section>
+  );
+};
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -632,6 +701,9 @@ const CateringPage = () => {
             </div>
          </div>
       </section>
+
+      {/* --- SERVICE CHARTER --- */}
+      <ServiceCharterSection />
 
       {/* --- FOOTER --- */}
       <footer className="bg-[#f0f0f0] text-[#2b4432] pt-12 sm:pt-16 pb-12 relative">
