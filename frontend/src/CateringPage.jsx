@@ -621,7 +621,7 @@ const CateringPage = () => {
                   >
                       <button 
                         disabled={status === 'sending'}
-                        className="w-full bg-[#2b4432] text-white py-4 rounded-xl text-lg font-bold uppercase tracking-widest hover:bg-[#3d5e46] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg disabled:opacity-70 disabled:pointer-events-none"
+                        className="w-full bg-primary text-white py-4 rounded-xl text-lg font-bold uppercase tracking-widest hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98] transition-all shadow-lg disabled:opacity-70 disabled:pointer-events-none"
                       >
                          {status === 'sending' ? 'Invio...' : 'Invia Richiesta'}
                       </button>
