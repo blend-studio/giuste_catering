@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout } from 'lucide-react';
+import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout, MessageSquareText } from 'lucide-react';
 
 const WhatsAppIcon = ({ size = 24, className = "" }) => (
   <svg 
@@ -58,12 +58,12 @@ const StaggeredHeroText = ({ text, className = "", stroke = false }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
-      className={`flex font-heading font-medium uppercase tracking-tight leading-[0.9] whitespace-nowrap ${className}`}
+      className={`flex font-heading font-normal uppercase tracking-tight leading-[0.9] whitespace-nowrap ${className}`}
       // Rimossa la logica stroke per forzare il bianco pieno come richiesto
       style={{ perspective: "1000px" }}
     >
       {letters.map((letter, index) => (
-        <motion.span key={index} variants={child} className="inline-block origin-bottom drop-shadow-2xl">
+        <motion.span key={index} variants={child} className="inline-block origin-bottom drop-shadow-2xl font-normal">
           {letter === " " ? "\u00A0" : letter}
         </motion.span>
       ))}
@@ -142,6 +142,99 @@ const NoiseOverlay = () => (
        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
   </div>
 );
+
+const FloatingContactButton = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleOpen = () => setIsOpen(!isOpen);
+
+  const containerVariants = {
+    hidden: { opacity: 0, transition: { staggerChildren: 0.05, staggerDirection: -1 } },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.5 },
+    show: { opacity: 1, y: 0, scale: 1 }
+  };
+
+  return (
+    <div className="fixed bottom-6 right-6 z-[9999] flex flex-col items-end pointer-events-none">
+      <motion.div
+        initial="hidden"
+        animate={isOpen ? "show" : "hidden"}
+        variants={containerVariants}
+        className="flex flex-col items-end gap-3 mb-3 pointer-events-auto"
+      >
+        {/* Phone */}
+        <motion.a
+          href="tel:+393881589905"
+          variants={itemVariants}
+          className="w-12 h-12 bg-[#00d775] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <Phone size={20} />
+        </motion.a>
+
+        {/* WhatsApp */}
+        <motion.a
+          href="https://wa.me/393881589905"
+          variants={itemVariants}
+          className="w-12 h-12 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <WhatsAppIcon size={20} />
+        </motion.a>
+
+        {/* Mail */}
+        <motion.a
+          href="mailto:info@giustefoodtruck.it"
+          variants={itemVariants}
+          className="w-12 h-12 bg-[#ff4b55] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <Mail size={20} />
+        </motion.a>
+
+        {/* Instagram */}
+        <motion.a
+          href="https://instagram.com"
+          variants={itemVariants}
+          className="w-12 h-12 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <Instagram size={20} />
+        </motion.a>
+      </motion.div>
+
+      <div className="flex items-center gap-3 pointer-events-auto">
+        <motion.div 
+            key={isOpen ? 'close' : 'open'}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 10 }}
+            className="bg-white px-3 py-1.5 rounded-lg shadow-md text-sm font-medium text-gray-700 hidden md:block"
+        >
+            {isOpen ? 'Chiudi' : 'Contattaci'}
+        </motion.div>
+        
+        <button
+          onClick={toggleOpen}
+          className="w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 bg-[#86d696]"
+        >
+          <motion.div
+            animate={{ rotate: isOpen ? 90 : 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            {isOpen ? <X size={28} /> : <MessageSquareText size={28} />}
+          </motion.div>
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const ServiceCharterSection = () => {
   const [email, setEmail] = useState('');
@@ -363,6 +456,7 @@ const CateringPage = () => {
   return (
     <div ref={containerRef} className="bg-background text-primary font-sans selection:bg-primary selection:text-background overflow-x-hidden w-full scroll-smooth">
       <Navbar />
+      <FloatingContactButton />
       <NoiseOverlay />
       
       {/* --- HERO SECTION --- */}

@@ -40,7 +40,6 @@
     font-family: 'Montserrat', sans-serif;
     letter-spacing: -0.02em; /* Leggermente più stretto per i titoli bold */
     text-transform: uppercase;
-    font-weight: 800; /* Extra Bold per compensare la perdita di Bebas */
   }
 }
 
