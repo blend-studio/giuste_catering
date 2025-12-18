@@ -18,7 +18,6 @@ class ServiceCharterController extends Controller
         // Track the download
         ServiceCharterDownload::create([
             'email' => $request->email,
-            'ip_address' => $request->ip(),
         ]);
 
         // Path to the file in storage/app

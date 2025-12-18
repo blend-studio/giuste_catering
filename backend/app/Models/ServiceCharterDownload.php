@@ -9,5 +9,5 @@ class ServiceCharterDownload extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['email', 'ip_address'];
+    protected $fillable = ['email'];
 }
