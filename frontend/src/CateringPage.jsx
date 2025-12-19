@@ -1,11 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, Leaf, Sprout, MessageSquareText } from 'lucide-react';
+import { ArrowRight, ChefHat, Mail, Mails, MapPin, Instagram, Phone, CheckCircle2, Utensils, Briefcase, ChevronDown, Menu, X, MessageSquareText } from 'lucide-react';
 
 // --- CONFIGURATION ---
-// Hardcoded production URL to ensure deployment works immediately
-// Changed to subdirectory path catering/api
-const API_BASE_URL = import.meta.env.PROD ? 'https://giustefoodtruck.com/catering/api' : 'http://localhost:8000';
+// PHP PURO: Puntiamo direttamente alla cartella dove risiedono i file .php
+const API_BASE_URL = import.meta.env.PROD 
+  ? 'https://giustefoodtruck.com/catering/backend' 
+  : 'http://localhost:8000/backend'; // Assumi di servire la cartella backend localmente
 
 const WhatsAppIcon = ({ size = 24, className = "" }) => (
   <svg 
@@ -34,6 +35,7 @@ import food3 from './assets/images/Montanarina Coppa.jpg';
 import detailImg from './assets/images/20251129_173320.webp';
 import logistica from './assets/images/auguri in logistica pc .webp';
 import dolce from './assets/images/20251203_190718.webp'
+
 // --- COMPONENTS ---
 
 const StaggeredHeroText = ({ text, className = "", stroke = false }) => {
@@ -63,12 +65,11 @@ const StaggeredHeroText = ({ text, className = "", stroke = false }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
-      className={`flex font-heading font-normal uppercase tracking-tight leading-[0.9] whitespace-nowrap ${className}`}
-      // Rimossa la logica stroke per forzare il bianco pieno come richiesto
+      className={`flex flex-wrap justify-center font-heading font-black uppercase tracking-tight leading-[0.9] whitespace-nowrap text-white ${className}`}
       style={{ perspective: "1000px" }}
     >
       {letters.map((letter, index) => (
-        <motion.span key={index} variants={child} className="inline-block origin-bottom drop-shadow-2xl font-normal">
+        <motion.span key={index} variants={child} className="inline-block origin-bottom drop-shadow-2xl">
           {letter === " " ? "\u00A0" : letter}
         </motion.span>
       ))}
@@ -248,7 +249,10 @@ const ServiceCharterSection = () => {
   const handleDownload = async (e) => {
     e.preventDefault();
     setStatus('loading');
-    const apiUrl = `${API_BASE_URL}/api/download-charter`;
+    
+    // CORREZIONE: Puntiamo al file PHP puro
+    const apiUrl = `${API_BASE_URL}/download.php`;
+    
     console.log('--- Downloading Service Charter ---');
     console.log('Target URL:', apiUrl);
     
@@ -265,7 +269,7 @@ const ServiceCharterSection = () => {
       console.log('Response Status:', response.status);
 
       if (!response.ok) {
-         const text = await response.text(); // Read text first to see HTML errors
+         const text = await response.text(); 
          console.error('API Error Body:', text);
          throw new Error('Errore nel download: ' + response.statusText);
       }
@@ -341,7 +345,6 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
-       {/* Top Bar - Hidden on scroll for cleaner look, or kept if preferred. Matching the screenshot's dark green */}
        <div className={`bg-[#2b4432] text-white px-6 transition-all duration-500 ease-in-out overflow-hidden ${isScrolled ? 'max-h-0 opacity-0' : 'max-h-20 py-3 opacity-100'}`}>
           <div className="max-w-7xl mx-auto flex justify-between items-center text-base font-medium tracking-wide">
              <div className="flex items-center gap-2">
@@ -353,15 +356,13 @@ const Navbar = () => {
              <div className="flex items-center gap-4">
                  <div className="bg-white rounded-full flex items-center justify-center p-1.5">
                     <Instagram size={16} className="text-[#2b4432]" />
-                  </div>
+                 </div>
              </div>
           </div>
        </div>
 
-       {/* Main Navbar */}
        <div className={`bg-white shadow-md transition-all duration-300 ${isScrolled ? 'py-2' : 'py-4'}`}>
           <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-             {/* Logo */}
              <a href="https://giustefoodtruck.com/" className="block">
                 <img 
                    src="https://giustefoodtruck.com/wp-content/uploads/2023/03/logo-verde.png" 
@@ -370,7 +371,6 @@ const Navbar = () => {
                 />
              </a>
 
-             {/* Desktop Nav */}
              <nav className="hidden lg:flex items-center gap-8">
                 {navLinks.map(link => (
                    <a 
@@ -382,7 +382,6 @@ const Navbar = () => {
                    </a>
                 ))}
                 
-                {/* Contattaci Button - desktop */}
                 <a 
                    href="#contact"
                    className="ml-6 block bg-[#2b4432] text-white px-8 py-2 rounded-xl font-medium text-base active:scale-95 transition-all duration-300 hover:bg-[#fdd017] hover:text-[#2b4432]"
@@ -391,7 +390,6 @@ const Navbar = () => {
                 </a>
              </nav>
 
-             {/* Mobile Toggle */}
              <div className="flex items-center lg:hidden">
                 <button className="text-[#2b4432]" onClick={() => setIsOpen(!isOpen)}>
                    {isOpen ? <X size={28} /> : <Menu size={28} />}
@@ -400,7 +398,6 @@ const Navbar = () => {
           </div>
        </div>
 
-       {/* Mobile Menu */}
        <motion.div 
           initial={false}
           animate={isOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
@@ -442,7 +439,10 @@ const CateringPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
-    const apiUrl = `${API_BASE_URL}/api/catering-inquiry`;
+    
+    // CORREZIONE: Puntiamo al file PHP puro
+    const apiUrl = `${API_BASE_URL}/contact.php`;
+    
     console.log('--- Submitting Inquiry ---');
     console.log('Target URL:', apiUrl);
     console.log('Payload:', formData);
@@ -460,7 +460,7 @@ const CateringPage = () => {
       console.log('Response Status:', response.status, response.statusText);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ message: 'Invalid JSON response' })); // Handle non-JSON errors
+        const errorData = await response.json().catch(() => ({ message: 'Invalid JSON response' }));
         console.error('API Error Response:', errorData);
         throw new Error(errorData.message || 'Something went wrong');
       }
@@ -468,7 +468,7 @@ const CateringPage = () => {
       const data = await response.json();
       console.log('Success Response:', data);
       setStatus('success');
-      setFormData({ name: '', email: '', type: 'private', date: '', message: '' }); // Clear form on success
+      setFormData({ name: '', email: '', type: 'private', date: '', message: '' });
     } catch (error) {
       console.error('Fetch Error:', error);
       setStatus('error');
@@ -489,7 +489,7 @@ const CateringPage = () => {
                    alt="Giustè Catering" 
                    className="w-full h-full object-cover object-center" 
                 />
-                <div className="absolute inset-0 bg-black/60"></div> {/* Overlay scuro per contrasto */}
+                <div className="absolute inset-0 bg-black/60"></div>
             </motion.div>
 
           
@@ -503,7 +503,6 @@ const CateringPage = () => {
                         Tradizione & Eleganza
                    </span>
 
-                   {/* TITOLO HERO: Bianco, Montserrat, Ben Disposto */}
                    <div className="flex flex-col items-center gap-2">
                       <StaggeredHeroText text="GIUSTÈ" className="text-[10vw] sm:text-[10vw] md:text-[10vw] leading-[0.8] text-white drop-shadow-xl" />
                       <StaggeredHeroText text="CATERING" className="text-[10vw] sm:text-[10vw] md:text-[10vw] leading-[0.8] text-white drop-shadow-xl" />
@@ -593,7 +592,7 @@ const CateringPage = () => {
                   </div>
                </motion.div>
 
-               {/* Card 2: EVENTI AZIENDALI (Sostituisce Food Truck) */}
+               {/* Card 2: EVENTI AZIENDALI */}
                <motion.div 
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -601,7 +600,6 @@ const CateringPage = () => {
                   transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
                   className="group relative h-[55vh] sm:h-[60vh] overflow-hidden rounded-giuste cursor-pointer shadow-lg"
                >
-                  {/* Uso heroImage come placeholder professionale, o un'altra img aziendale */}
                   <img src={logistica} className="w-full h-full object-cover object-right transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors"></div>
                   <div className="absolute bottom-0 left-0 p-6 sm:p-10 w-full bg-gradient-to-t from-primary/90 to-transparent text-[#ececec]">
@@ -689,9 +687,9 @@ const CateringPage = () => {
                   <p className="text-2xl">Raccontaci la tua idea.</p>
                   <p className="opacity-80">Ti risponderemo entro 24h con una proposta cucita su misura per il tuo evento privato o aziendale.</p>
                   <div className="space-y-6 text-base mt-8 relative z-10">
-                     <a href="mailto:info@giustefoodtruck.it" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><MailCircleIcon size={24}/> info@giustefoodtruck.it</a>
-                     <a href="tel:+393881589905" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><Phone className="w-6 h-6"/> +39 388 1589905</a>
-                     <div className="flex items-center gap-4 opacity-70"><MapPin className="w-6 h-6"/> Piacenza e Nord Italia</div>
+                      <a href="mailto:info@giustefoodtruck.it" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><MailCircleIcon size={24}/> info@giustefoodtruck.it</a>
+                      <a href="tel:+393881589905" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><Phone className="w-6 h-6"/> +39 388 1589905</a>
+                      <div className="flex items-center gap-4 opacity-70"><MapPin className="w-6 h-6"/> Piacenza e Nord Italia</div>
                   </div>
                </div>
 
@@ -775,7 +773,7 @@ const CateringPage = () => {
                      <label className="text-xs uppercase tracking-widest opacity-70 font-bold ml-1 text-primary">Data Evento</label>
                      <input
                        type="date"
-                       className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3 text-lg text-primary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-gray-400"
+                       className="w-full bg-gray-50 border border-gray-200 rounded-xl px-5 py-3 text-lg text-primary focus:border-primary focus:bg-white outline-none transition-all placeholder:text-gray-400 appearance-none min-w-0"
                        value={formData.date}
                        onChange={e => setFormData({...formData, date: e.target.value})}
                      />
