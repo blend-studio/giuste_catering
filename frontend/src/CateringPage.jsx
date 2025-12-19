@@ -198,7 +198,7 @@ const FloatingContactButton = () => {
 
         {/* Mail */}
         <motion.a
-          href="mailto:info@giustefoodtruck.it"
+          href="mailto:info@giustefoodtruck.com"
           variants={itemVariants}
           className="w-14 h-14 bg-[#ff4b55] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
         >
@@ -351,7 +351,7 @@ const Navbar = () => {
                 <div className="bg-white rounded-full flex items-center justify-center p-1.5">
                   <Mails size={16} className="text-[#2b4432]" />
                 </div>
-                <a href="mailto:info@giustefoodtruck.it" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.it</a>
+                <a href="mailto:info@giustefoodtruck.com" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.com</a>
              </div>
              <div className="flex items-center gap-4">
                  <div className="bg-white rounded-full flex items-center justify-center p-1.5">
@@ -687,7 +687,7 @@ const CateringPage = () => {
                   <p className="text-2xl">Raccontaci la tua idea.</p>
                   <p className="opacity-80">Ti risponderemo entro 24h con una proposta cucita su misura per il tuo evento privato o aziendale.</p>
                   <div className="space-y-6 text-base mt-8 relative z-10">
-                      <a href="mailto:info@giustefoodtruck.it" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><MailCircleIcon size={24}/> info@giustefoodtruck.it</a>
+                      <a href="mailto:info@giustefoodtruck.com" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><MailCircleIcon size={24}/> info@giustefoodtruck.com</a>
                       <a href="tel:+393881589905" className="flex items-center gap-4 hover:opacity-70 transition-opacity"><Phone className="w-6 h-6"/> +39 388 1589905</a>
                       <div className="flex items-center gap-4 opacity-70"><MapPin className="w-6 h-6"/> Piacenza e Nord Italia</div>
                   </div>
