@@ -65,7 +65,7 @@ const StaggeredHeroText = ({ text, className = "", stroke = false }) => {
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
-      className={`flex flex-wrap justify-center font-heading font-black uppercase tracking-tight leading-[0.9] whitespace-nowrap text-white ${className}`}
+      className={`flex flex-wrap justify-center font-heading font-normal uppercase tracking-tight leading-[0.9] whitespace-nowrap text-white ${className}`}
       style={{ perspective: "1000px" }}
     >
       {letters.map((letter, index) => (
