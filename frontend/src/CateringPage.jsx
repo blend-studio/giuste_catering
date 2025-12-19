@@ -843,6 +843,7 @@ const CateringPage = () => {
             <a href="https://giustefoodtruck.com/chi-siamo/" className="font-heading font-medium text-lg tracking-widest hover:text-[#5c8a66] transition-colors">NOI DUE</a>
             <a href="https://giustefoodtruck.com/servizi/" className="font-heading font-medium text-lg tracking-widest hover:text-[#5c8a66] transition-colors">COSA FACCIAMO</a>
             <a href="https://giustefoodtruck.com/social-feed/" className="font-heading font-medium text-lg tracking-widest hover:text-[#5c8a66] transition-colors">SOCIAL FEED</a>
+            <a href="https://giustefoodtruck.com/catering" className="font-heading font-medium text-lg tracking-widest hover:text-[#5c8a66] transition-colors">CATERING</a>
           </div>
 
           {/* Horizontal Line */}
