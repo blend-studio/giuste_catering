@@ -340,6 +340,7 @@ const Navbar = () => {
     { name: "HOME", href: "https://giustefoodtruck.com/" },
     { name: "NOI DUE", href: "https://giustefoodtruck.com/chi-siamo/" },
     { name: "COSA FACCIAMO", href: "https://giustefoodtruck.com/servizi/" },
+    { name: "CATERING", href: "https://giustefoodtruck.com/catering" },
     { name: "SOCIAL FEED", href: "https://giustefoodtruck.com/social-feed/" },
   ];
 
