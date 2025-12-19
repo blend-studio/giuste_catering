@@ -23,7 +23,7 @@ const WhatsAppIcon = ({ size = 24, className = "" }) => (
 
 const MailCircleIcon = ({ size = 24, className = "" }) => (
   <div className={`bg-white rounded-full flex items-center justify-center p-1.5 ${className}`}>
-    <Mail size={size} className="text-[#2b4432]" />
+    <Mail size={size} className="text-[#325541]" />
   </div>
 );
 
@@ -346,17 +346,17 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] transition-all duration-300">
-       <div className={`bg-[#2b4432] text-white px-6 transition-all duration-500 ease-in-out overflow-hidden ${isScrolled ? 'max-h-0 opacity-0' : 'max-h-20 py-3 opacity-100'}`}>
+       <div className={`bg-[#325541] text-white px-6 transition-all duration-500 ease-in-out overflow-hidden ${isScrolled ? 'max-h-0 opacity-0' : 'max-h-20 py-3 opacity-100'}`}>
           <div className="max-w-7xl mx-auto flex justify-between items-center text-base font-medium tracking-wide">
              <div className="flex items-center gap-2">
                 <div className="bg-white rounded-full flex items-center justify-center p-1.5">
-                  <Mails size={16} className="text-[#2b4432]" />
+                  <Mails size={16} className="text-[#325541]" />
                 </div>
                 <a href="mailto:info@giustefoodtruck.com" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.com</a>
              </div>
              <div className="flex items-center gap-4">
                  <div className="bg-white rounded-full flex items-center justify-center p-1.5">
-                    <Instagram size={16} className="text-[#2b4432]" />
+                    <Instagram size={16} className="text-[#325541]" />
                  </div>
              </div>
           </div>
@@ -377,7 +377,7 @@ const Navbar = () => {
                    <a 
                      key={link.name} 
                      href={link.href}
-                     className="text-[#2b4432] font-semibold text-base tracking-widest hover:text-[#5c8a66] transition-colors"
+                     className="text-[#325541] font-semibold text-base tracking-widest hover:text-[#5c8a66] transition-colors"
                    >
                      {link.name}
                    </a>
@@ -385,14 +385,14 @@ const Navbar = () => {
                 
                 <a 
                    href="#contact"
-                   className="ml-6 block bg-[#2b4432] text-white px-8 py-2 rounded-xl font-medium text-base active:scale-95 transition-all duration-300 hover:bg-[#fdd017] hover:text-[#2b4432]"
+                   className="ml-6 block bg-[#325541] text-white px-8 py-2 rounded-xl font-medium text-base active:scale-95 transition-all duration-300 hover:bg-[#fdd017] hover:text-[#325541]"
                 >
                    Contattaci
                 </a>
              </nav>
 
              <div className="flex items-center lg:hidden">
-                <button className="text-[#2b4432]" onClick={() => setIsOpen(!isOpen)}>
+                <button className="text-[#325541]" onClick={() => setIsOpen(!isOpen)}>
                    {isOpen ? <X size={28} /> : <Menu size={28} />}
                 </button>
              </div>
@@ -409,7 +409,7 @@ const Navbar = () => {
                 <a 
                    key={link.name} 
                    href={link.href}
-                   className="text-[#2b4432] font-semibold text-lg tracking-widest"
+                   className="text-[#325541] font-semibold text-lg tracking-widest"
                    onClick={() => setIsOpen(false)}
                 >
                    {link.name}
@@ -417,7 +417,7 @@ const Navbar = () => {
              ))}
              <a 
                 href="#contact"
-                className="bg-[#2b4432] text-white px-6 py-3 rounded-xl font-bold text-sm tracking-widest text-center hover:bg-[#3d5e46] transition-all"
+                className="bg-[#325541] text-white px-6 py-3 rounded-xl font-bold text-sm tracking-widest text-center hover:bg-[#3d5e46] transition-all"
                 onClick={() => setIsOpen(false)}
              >
                 Contattaci
@@ -822,7 +822,7 @@ const CateringPage = () => {
       <ServiceCharterSection />
 
       {/* --- FOOTER --- */}
-      <footer className="bg-[#f0f0f0] text-[#2b4432] pt-12 sm:pt-16 pb-12 relative">
+      <footer className="bg-[#f0f0f0] text-[#325541] pt-12 sm:pt-16 pb-12 relative">
 
         {/* Decorative Images */}
         <img 
@@ -846,12 +846,12 @@ const CateringPage = () => {
           </div>
 
           {/* Horizontal Line */}
-          <div className="border-t-2 border-[#2b4432] my-10 w-full"></div>
+          <div className="border-t-2 border-[#325541] my-10 w-full"></div>
 
           {/* Copyright and Socials */}
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm font-medium opacity-80">
             <p className="mb-4 sm:mb-0 tracking-wide">© {new Date().getFullYear()} Giustè Food Truck | By Blend Studio</p>
-            <a href="https://instagram.com" className="hover:text-[#5c8a66] transition-colors underline underline-offset-4 decoration-[#2b4432]/30">Instagram</a>
+            <a href="https://instagram.com" className="hover:text-[#5c8a66] transition-colors underline underline-offset-4 decoration-[#325541]/30">Instagram</a>
           </div>
         </div>
       </footer>
