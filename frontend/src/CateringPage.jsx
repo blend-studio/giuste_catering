@@ -355,9 +355,9 @@ const Navbar = () => {
                 <a href="mailto:info@giustefoodtruck.com" className="hover:opacity-80 transition-opacity">info@giustefoodtruck.com</a>
              </div>
              <div className="flex items-center gap-4">
-                 <div className="bg-white rounded-full flex items-center justify-center p-1.5">
+                <a href="https://www.instagram.com/giustefoodtruck/" target="_blank" rel="noopener noreferrer" className="bg-white rounded-full flex items-center justify-center p-1.5 hover:scale-110 transition-transform">
                     <Instagram size={16} className="text-[#325541]" />
-                 </div>
+                </a>
              </div>
           </div>
        </div>
