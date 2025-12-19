@@ -207,7 +207,7 @@ const FloatingContactButton = () => {
 
         {/* Instagram */}
         <motion.a
-          href="https://instagram.com"
+          href="https://www.instagram.com/giustefoodtruck/"
           variants={itemVariants}
           className="w-14 h-14 bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
         >
@@ -852,7 +852,7 @@ const CateringPage = () => {
           {/* Copyright and Socials */}
           <div className="flex flex-col sm:flex-row justify-between items-center text-sm font-medium opacity-80">
             <p className="mb-4 sm:mb-0 tracking-wide">© {new Date().getFullYear()} Giustè Food Truck | By Blend Studio</p>
-            <a href="https://instagram.com" className="hover:text-[#5c8a66] transition-colors underline underline-offset-4 decoration-[#325541]/30">Instagram</a>
+            <a href="https://www.instagram.com/giustefoodtruck/" className="hover:text-[#5c8a66] transition-colors underline underline-offset-4 decoration-[#325541]/30">Instagram</a>
           </div>
         </div>
       </footer>
